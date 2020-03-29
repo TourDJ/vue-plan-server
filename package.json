@@ -1,0 +1,38 @@
+{
+  "name": "vue-plan-server",
+  "version": "1.0.0",
+  "description": "A back end service application server for vue project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch routes --exec babel-node index.js --start --config=config/args.json",
+    "dev": "babel-node index.js --start --config=config/args.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TourDJ/vue-plan-server.git"
+  },
+  "author": "tourDJ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TourDJ/vue-plan-server/issues"
+  },
+  "homepage": "https://github.com/TourDJ/vue-plan-server#readme",
+  "dependencies": {
+    "arangojs": "^6.13.0",
+    "body-parser": "^1.18.3",
+    "connect": "^3.6.6",
+    "cors": "^2.8.5",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "promise": "^8.0.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "nodemon": "^1.18.6"
+  }
+}
