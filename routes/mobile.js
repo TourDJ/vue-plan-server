@@ -10,10 +10,10 @@ module.exports = async (req, res, next) => {
 
   try {
     if(phone) {
-      mobile.createTime = datePlus(Date.now(), 8)
+      mobile.create_time = datePlus(Date.now(), 0)
       mobile.status = 1
       mobile.phone = phone
-      mobile.captcha = generateRandom(1, 999999)
+      mobile.captcha = generateRandom(100000, 999999).toString()
     } else
       return res.json({status: 500, msg: "操作失败，数据异常。"})
 

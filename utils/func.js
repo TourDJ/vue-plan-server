@@ -4,6 +4,7 @@ var request = require('request');
 var Promise = require('promise');
 const formidable = require('formidable');
 const options = require('./options');
+import { isEmpty } from './util'
 
 /**
  * 上传文件
@@ -126,18 +127,6 @@ async function parseFile(files, dirPath, subdir) {
   return result;
 }
 
-function isEmpty(obj) {
-  if(!obj || !obj instanceof Object)
-    return true
-
-  for(var o in obj) {
-    if (obj.hasOwnProperty(o))
-      return false
-  }
-
-  return true
-}
-
 /**
  * options["imgPath"]["genealogy"]["donate"]["content"]
  * @param str
@@ -165,13 +154,6 @@ function resolveSplit(str) {
   }
 
   return result;
-}
-
-function notEmpty(str) {
-  if(!str)
-    str = "";
-
-  return str;
 }
 
 function pageAQL(limit, count) {

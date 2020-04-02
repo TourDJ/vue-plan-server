@@ -1,11 +1,5 @@
-
 // Base properties configuration
 module.exports = {
-
-  album: {
-    cover: "cover",
-    avatar: "avatar"
-  },
 
   // Vertex represent database's entity table.
   vertex: {

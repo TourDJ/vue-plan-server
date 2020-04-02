@@ -14,20 +14,20 @@ module.exports = async (req, res, next) => {
         RETURN p
     `)
 
-    const data = await cursor.next();
+    const data = await cursor.next()
 
     result = res.json({
       statusCode: statusCode.STATUS_CODE_OK,
       msg: message.MESSAGE_SUCCESS,
       data: data
-    });
+    })
   } catch (error) {
     console.log(error)
     
     result = res.json({
       statusCode: statusCode.STATUS_CODE_ERROR,
       msg: message.MESSAGE_EXCEPTION
-    });
+    })
   }
 
   return result

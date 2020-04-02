@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 const router = Router()
 
-// router.post('/user/login', require('./userLogin'))
+router.post('/user/login', require('./userLogin'))
 router.get('/user/:id', require('./user'))
 router.post('/user/sms', require('./mobile'))
 // router.post('/upload', require('./upload'))
