@@ -2,7 +2,7 @@ const arangodb = require('../utils/arangodb')
 import { doAction } from '../utils/arangoUtils'
 import { datePlus, isEmpty } from '../utils/util'
 import { vertex, statusCode, message } from '../utils/options'
-import { generateToken, parseToken } from '../utils/jwt'
+import { generateToken } from '../utils/jwt'
 
 function baseInfo(user) {
   user.create_time = datePlus(Date.now(), 8)
@@ -34,13 +34,17 @@ async function loginWithMobile(plan_mobile, plan_user, user) {
     
     cursor = await arangodb.query(`
       FOR p IN ${plan_user} 
-        FILTER p.mobile == ${user.mobile}
+        FILTER p.mobile == '${user.mobile}'
           and p.status == 1 
         RETURN p
     `)
 
-    data = await cursor.next()
-    if (!data) {
+    result = await cursor.next()
+    if (!result) {
+      user.username = ''
+      user.email = ''
+      user.password = ''
+      user.nickname = user.mobile
       let record = JSON.stringify(user),
           aql = `
             INSERT ${record}
@@ -48,12 +52,12 @@ async function loginWithMobile(plan_mobile, plan_user, user) {
             RETURN NEW
           `
       data = await doAction(arangodb, plan_user, aql, null, null)
-      
+      if (data && data._extra.stats.writesExecuted == 1)
+        result = data._documents && data._documents[0]
     }
   }
 
-  if (data && data._extra.stats.writesExecuted == 1) {
-    result = data._documents && data._documents[0]
+  if (result) {
 
     //Generate access token with mobile
     token = generateToken(user)
@@ -61,7 +65,7 @@ async function loginWithMobile(plan_mobile, plan_user, user) {
     result.token = token
 
   } else {
-    result = {status: 500, msg: "登陆失败。"}
+    result = {status: 500, message: "登陆失败。"}
   }
 
   return result
@@ -74,10 +78,10 @@ module.exports = async (req, res, next) => {
   
   try {
     if(isEmpty(user))
-      return res.json({status: 500, msg: "操作失败，数据异常。"})
+      return res.json({status: 500, message: "操作失败，数据异常。"})
 
     if(!plan_user || typeof plan_user !== "string")
-      return res.json({status: 500, msg: "操作失败，数据库表不存在。"})
+      return res.json({status: 500, message: "操作失败，数据库表不存在。"})
       
     baseInfo(user)
     
@@ -96,12 +100,12 @@ module.exports = async (req, res, next) => {
     }
 
     if (result.status == 500) {
-      return res.json({status: 500, msg: "操作失败，登陆异常。"})
+      return res.json({status: 500, message: "操作失败，登陆异常。"})
     } else {
-      return res.json({status: 200, msg: "登陆成功", result: result})
+      return res.json({status: 200, message: "登陆成功", result: result})
     }
     
   } catch (e) {
-    return res.json({status: 500, msg: e.message})
+    return res.json({status: 500, message: e.message})
   }
 }

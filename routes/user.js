@@ -1,12 +1,22 @@
 const arangodb = require('../utils/arangodb')
 import { vertex, statusCode, message } from '../utils/options'
+import { parseToken } from '../utils/jwt'
 
 module.exports = async (req, res, next) => {
-  const { id } = req.params
+  const { token } = req.query
   const { plan_user, plan_log } = vertex
   let result
   
   try {
+
+    var decoded = parseToken(token)
+    if (decoded) {
+      if (decoded.mobile) {
+
+      } else if (decoded.username) {
+        
+      }
+    }
 
     const cursor = await arangodb.query(`
         FOR p IN ${plan_user} 
