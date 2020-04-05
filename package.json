@@ -4,7 +4,7 @@
   "description": "A back end service application server for vue project.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch routes --exec babel-node index.js --start --config=config/args.json",
+    "start": "nodemon --watch routes --watch utils --exec babel-node index.js --start --config=config/args.json",
     "dev": "babel-node index.js --start --config=config/args.json"
   },
   "repository": {

@@ -71,6 +71,38 @@ async function loginWithMobile(plan_mobile, plan_user, user) {
   return result
 }
 
+async function loginWithUsername(plan_user, user) {
+  let cursor, result, 
+      aql = `
+        FOR p IN ${plan_user} FILTER p.status == 1 
+      `
+
+  if (user.username) {
+    aql += ` and p.username == '${user.username}' `
+  } else if (user.email) {
+    aql += ` and p.email == '${user.email}' `
+  }
+  aql += ` 
+    and p.password == '${user.password}'
+    RETURN p 
+  `
+
+  cursor = await arangodb.query(aql)
+
+  result = await cursor.next()
+  if (result) {
+
+    //Generate access token with username
+    let token = generateToken(user)
+    result.token = token
+
+  } else {
+    result = {status: 500, message: "登陆失败。"}
+  }
+
+  return result
+}
+
 module.exports = async (req, res, next) => {
   const { user } = req.body
   const { plan_user, plan_mobile, plan_log } = vertex
@@ -89,14 +121,10 @@ module.exports = async (req, res, next) => {
       //Mobile login
       result = await loginWithMobile(plan_mobile, plan_user, user)
 
-    } else if (user.username) {
+    } else if (user.username || user.email) {
       //Username or email login
-      cursor = await arangodb.query(`
-          FOR p IN ${plan_user} 
-          FILTER p.username == ${user.username} and p.status == 1 
-          RETURN p
-      `)
-
+      result = await loginWithUsername(plan_user, user)
+      console.log(result)
     }
 
     if (result.status == 500) {

@@ -37,7 +37,7 @@ const secret = "Jfx1!@Dgx3#"
 //  These claims can also be provided in the payload directly with exp, nbf, aud, sub 
 //  and iss respectively, but you can't include in both places.
 const options = {
-  expiresIn: 60 * 60
+  expiresIn: 30 * 60
 }
 
 //Signing a token with expiration.
@@ -62,5 +62,5 @@ export function generateToken(payload, callback) {
 //optional expiration, audience, or issuer are valid. If not, 
 //it will throw the error.
 export function parseToken(token, callback) {
-  return jwt.verity(token, secret, {}, callback)
+  return jwt.verify(token, secret, {}, callback)
 }

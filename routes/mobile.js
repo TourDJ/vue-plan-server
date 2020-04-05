@@ -15,10 +15,10 @@ module.exports = async (req, res, next) => {
       mobile.phone = phone
       mobile.captcha = generateRandom(100000, 999999).toString()
     } else
-      return res.json({status: 500, msg: "操作失败，数据异常。"})
+      return res.json({status: 500, message: "操作失败，数据异常。"})
 
     if(!plan_mobile || typeof plan_mobile !== "string")
-      return res.json({status: 500, msg: "操作失败，数据库表不存在。"})
+      return res.json({status: 500, message: "操作失败，数据库表不存在。"})
 
     let record = JSON.stringify(mobile)
     let aql = `
@@ -38,10 +38,10 @@ module.exports = async (req, res, next) => {
     if(ret == 1) {
       data = result._documents && result._documents[0].captcha
     } else
-      return res.json({status: 500, msg: "操作失败，数据异常。"})
+      return res.json({status: 500, message: "操作失败，数据异常。"})
 
-    return res.json({status: 200, msg: "ok", data: data})
+    return res.json({status: 200, message: "ok", result: data})
   } catch (e) {
-    return res.json({status: 500, msg: e.message})
+    return res.json({status: 500, message: e.message})
   }
 }
