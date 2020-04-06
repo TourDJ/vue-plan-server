@@ -25,12 +25,18 @@ module.exports = async (req, res, next) => {
               and p.status==1 
             RETURN p
         `
+      } else if (decoded.email) {
+        aql = `
+          FOR p IN ${plan_user} 
+            FILTER p.email == '${decoded.email}'
+              and p.status==1 
+            RETURN p
+        `
       }
     } else
       return res.json({status: statusCode.STATUS_CODE_ERROR, message: "操作失败，数据异常。"})
 
     const cursor = await arangodb.query(aql)
-
     const data = await cursor.next()
     if (data) {
       return res.json({

@@ -124,7 +124,6 @@ module.exports = async (req, res, next) => {
     } else if (user.username || user.email) {
       //Username or email login
       result = await loginWithUsername(plan_user, user)
-      console.log(result)
     }
 
     if (result.status == 500) {
