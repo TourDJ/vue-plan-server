@@ -5,7 +5,8 @@ module.exports = {
   vertex: {
     plan_user: "plan_user",
     plan_mobile: "plan_mobile",
-    plan_log: "plan_log"
+    plan_log: "plan_log",
+    plan_doing: "plan_doing"
   },
 
   // Http status code
@@ -17,8 +18,8 @@ module.exports = {
 
   // Process response message
   message: {
-    MESSAGE_SUCCESS: "成功",
-    MESSAGE_FAILURE: "失败",
+    MESSAGE_SUCCESS: "操作成功",
+    MESSAGE_FAILURE: "操作失败",
     MESSAGE_EXCEPTION: "服务器异常",
     MESSAGE_DATA_EXCEPTION: "操作失败，数据异常",
     MESSAGE_TABLE_NOT_EXISTS: "操作失败，数据库表不存在",
